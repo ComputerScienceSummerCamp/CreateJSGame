@@ -79,10 +79,4 @@ function init() {
         }
     }
 
-    function gameOver() {
-        alert("ゲームオーバー");
-
-        createjs.Ticker.removeAllEventListeners();
-        stage.removeAllEventListeners();
-    }
 }

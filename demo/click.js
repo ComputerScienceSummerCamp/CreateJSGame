@@ -1,6 +1,6 @@
 window.addEventListener("load", init);
 
-function init() {
+    function init() {
     stage.addEventListener("click", handleClick);
 
     function handleClick() {
