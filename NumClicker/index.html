@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
+    <title>NumClicker Ver1.3.0</title>
+</head>
+<body>
+<canvas id="myCanvas" width="960" height="540"></canvas>
+<script>
+    var isPlaying = true;
+
+    var stage;
+
+    var rect = [];
+    var numText = [];
+    var num = [];
+    var changeNumText = [];
+    var changeNum = [];
+    var isClicked = [];
+    var MAX;
+
+    var phaseText;
+    var clearText;
+    var statText;
+    var n;
+    var nextNum;
+
+    var time = 0;
+    var beginTime = 0;
+
+    var phase = 1;
+    var phaseMAX;
+
+    var middleSwapAvailable = false;
+    var changeNumAvailable = false;
+
+    var initNum;
+    var beginPhase;
+    var swapNum;
+    var reverseNum;
+    var middleSwapNum;
+    var showChangeNum;
+</script>
+<script src="objDefine.js"></script>
+<script src="initNum.js"></script>
+<script src="beginPhase.js"></script>
+<script src="swapNum.js"></script>
+<script src="reverseNum.js"></script>
+<script src="middleSwapNum.js"></script>
+<script src="showChangeNum.js"></script>
+<script src="handleClick.js"></script>
+<script src="handleTicker.js"></script>
+<p><a href="./">Retry</a></p>
+</body>
+</html>
