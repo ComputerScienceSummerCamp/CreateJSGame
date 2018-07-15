@@ -46,8 +46,8 @@ function init() {
                 //let targetY = player.y;
             }
             for (let i = 0; i < 20; i++) {
-                bossbulletList[i].x -= Math.cos(angle) * 15;
-                bossbulletList[i].y -= Math.sin(angle) * 15;
+                bossbulletList[i].x -= Math.cos(angle) * speed;
+                bossbulletList[i].y -= Math.sin(angle) * speed;
             }
             for (let i = 0; i < bossbulletList.length; i++) {
                 let bossLocal = bossbulletList[i].localToLocal(0, 0, player);
