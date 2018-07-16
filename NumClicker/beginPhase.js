@@ -6,6 +6,8 @@ function init(){
             nextNum = 1;
             time = 0;
             beginTime = 1;
+            middleSwapAvailable=false;
+            changeNumAvailable=false;
             switch (phase) {
                 case 1:
                     n=3;

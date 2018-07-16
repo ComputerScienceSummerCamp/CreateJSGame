@@ -1,6 +1,6 @@
 window.addEventListener("load",init);
 function init() {
-    initNum=function() {
+    initNum = function () {
         var i, j;
         beginTime += n * 5;
         statText.text = "n=" + n;
@@ -12,7 +12,6 @@ function init() {
             changeNum[i] = 0;
         }
         for (i = 0; i < n; i++) {
-            changeNum[i] = 0;
             while (true) {
                 num[i] = Math.floor(Math.random() * n) + 1;
                 for (j = 0; j < i; j++) {
@@ -43,6 +42,7 @@ function init() {
         }
         for (i = 0; i < n; i++) {
             numText[i].text = num[i];
+            num[i]+=changeNum[i];
             createjs.Tween.get(rect[i])
                 .wait(i * 500)
                 .to({alpha: 1}, 500);
