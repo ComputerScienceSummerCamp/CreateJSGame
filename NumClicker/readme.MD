@@ -1,3 +1,3 @@
-#不具合(2018/07/16)
+# 不具合一覧
 
-* showChangeNum関数が呼び出されない(showChangeNum.js自体がきちんと呼び出されていることは確認済み)
+* ~showChangeNum関数が呼び出されない~ 修正
