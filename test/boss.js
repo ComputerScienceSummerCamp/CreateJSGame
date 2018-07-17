@@ -25,7 +25,7 @@ function init() {
     boss.x = 850;
     boss.y = 270;
     boss.alpha = 0.0;
-    // stage.addChild(boss);
+
 
     createjs.Ticker.timingMode = createjs.Ticker.RAF;
     createjs.Ticker.addEventListener("tick", handleTick);
@@ -50,11 +50,13 @@ function init() {
                 bossbulletList[i].y -= Math.sin(angle) * speed;
             }
             for (let i = 0; i < bossbulletList.length; i++) {
-                let bossLocal = bossbulletList[i].localToLocal(0, 0, player);
-                if (player.hitTest(bossLocal.x, bossLocal.y)) {
+                let bulletLocal = bossbulletList[i].localToLocal(0, 0, player);
+                if (player.hitTest(bulletLocal.x, bulletLocal.y)) {
                     GameOver();
                 }
             }
+            let bossLocal = boss.localToLocal(0,0,player);
+            if(player.hitTest(bossLocal.x, bossLocal.y)) GameOver();
         }
         stage.update();
     }

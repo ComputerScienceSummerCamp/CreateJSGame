@@ -108,7 +108,6 @@ function init() {
                         stage.removeChild(enemyList[j]);
                         enemyList.splice(j, 1);
 
-                        score++;
                     }
                 }
             }
