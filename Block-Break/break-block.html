@@ -23,7 +23,7 @@
 
             // 背景を作成します
             let bg = new createjs.Shape();
-            bg.graphics.beginFill("black");
+            bg.graphics.beginFill("block");
             bg.graphics.drawRect(0, 0, 960, 540); // 長方形を描画
             stage.addChild(bg); // 表示リストに追加
 
@@ -60,6 +60,8 @@
                     isPressZ = false;
                 }
             }
+
+            /*UPDATE TEST*/
 
             /*自機*/
             let player = new createjs.Shape();
@@ -99,16 +101,24 @@
 
             /*ブロック*/
             /*大きさは幅40、高さ15、数は15,10*/
-            block_Container.x = 480;
-            block_Container.y = 270;
+            block_Container.x = 125;
+            block_Container.y = 80;
             stage.addChild(block_Container);
             let block_row = 15;
             let block_column= 10;
             for(i=0;i<block_column;i++) {
                 for(j=0;j<block_row;j++) {
                     let block = new createjs.Shape();
+                    block.graphics.beginFill(`rgba(${10*(j+10)},0,${10*(i+10)},1)`);  //``(シングルコーテーションで$が使える)
+                    //${}は計算式の結果を文字列にする
+                    block.setBounds(0,0,30,15);
+                    block.graphics.beginStroke("block");
+                    block.graphics.setStrokeStyle(1);
+                    block.graphics.drawRect(block_Container.x + (block.getBounds().width*j),block_Container.y + (block.getBounds().height*i),block.getBounds().width,block.getBounds().height);
+                    block_Container.addChild(block);
                 }
             }
+            stage.addChild(block_Container);
 
 
             /*フレーム処理*/
