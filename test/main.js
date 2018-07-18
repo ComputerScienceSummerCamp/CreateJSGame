@@ -94,6 +94,7 @@ function init() {
             for (let i = 0; i < enemyList.length; i++) {
                 let enemyLocal = enemyList[i].localToLocal(0, 0, player);
                 if (player.hitTest(enemyLocal.x, enemyLocal.y)) {
+                    console.log("enemy hit!");
                     GameOver();
                 }
             }
