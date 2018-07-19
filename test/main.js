@@ -58,6 +58,7 @@ function init() {
         }
 
         if (scene === 1) {
+            console.log(scene);
             stage.addChild(player);
             stage.addChild(boss);
 
@@ -94,6 +95,7 @@ function init() {
             for (let i = 0; i < enemyList.length; i++) {
                 let enemyLocal = enemyList[i].localToLocal(0, 0, player);
                 if (player.hitTest(enemyLocal.x, enemyLocal.y)) {
+                    console.log("enemy hit!");
                     GameOver();
                 }
             }
@@ -114,10 +116,4 @@ function init() {
             stage.update();
         }
     }
- /*   GameOver  = function() {
-        alert("ゲームオーバー");
-
-        createjs.Ticker.removeAllEventListeners();
-        stage.removeAllEventListeners();
-    }*/
 }

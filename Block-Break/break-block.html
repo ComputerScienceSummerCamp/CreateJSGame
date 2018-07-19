@@ -1,0 +1,195 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/base.css" />
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+    <script>
+        window.addEventListener("load", init);
+        function init() {
+            // Stageオブジェクトを作成。表示リストのルートになります。
+            let stage = new createjs.Stage("myCanvas");
+            //キーボード処理用変数
+            let isPressRight = false;
+            let isPressLeft = false;
+            let isPressZ = false;
+            //弾が発射されたかどうかの変数
+            let start = false;
+            //弾の動く向き、ベクトル
+            let vectorX = 1;
+            let vectorY = 1;
+            let i,j;
+            let block_Container = new createjs.Container();
+
+
+            // 背景を作成します
+            let bg = new createjs.Shape();
+            bg.graphics.beginFill("block");
+            bg.graphics.drawRect(0, 0, 960, 540); // 長方形を描画
+            stage.addChild(bg); // 表示リストに追加
+
+            /*キーボード移動制御*/
+            window.addEventListener("keydown", handleKeyDown);
+            window.addEventListener("keyup", handleKeyUp);
+
+            function handleKeyDown(event) {
+                let keyCode = event.keyCode;
+                /*
+                if(keyCode === 39) {
+                    isPressRight = true;
+                }
+                if(keyCode === 37) {
+                    isPressLeft = true;
+                }
+                */
+                if (keyCode === 90) {
+                    isPressZ = true;
+                }
+            }
+
+            function handleKeyUp(event) {
+                let keyCode = event.keyCode;
+                /*
+                if(keyCode === 39) {
+                    isPressRight = false;
+                }
+                if(keyCode === 37) {
+                    isPressLeft = false;
+                }
+                */
+                if (keyCode === 90) {
+                    isPressZ = false;
+                }
+            }
+
+            /*UPDATE TEST*/
+
+            /*自機*/
+            let player = new createjs.Shape();
+            let playerWidth = 150;
+            player.graphics.beginFill("white");
+            player.graphics.drawRect(0, 0, playerWidth, 10);
+            player.setBounds(0,0,playerWidth,10);
+            stage.addChild(player);
+            player.x = 160;
+            player.y = 500;
+
+            /*ボール*/
+            let ball = new createjs.Shape();
+            ball.graphics.beginFill("red");
+            ball.graphics.drawCircle(0, 0, 7);
+            ball.setBounds(0,0,7,7);
+            stage.addChild(ball);
+            let ballSpeed = 20;
+
+            /*外枠*/
+            let up_Wall = new createjs.Shape();
+            let left_Wall = new createjs.Shape();
+            let right_Wall = new createjs.Shape();
+            up_Wall.graphics.beginFill("green");
+            left_Wall.graphics.beginFill("green");
+            right_Wall.graphics.beginFill("green");
+            up_Wall.graphics.drawRect(0, 0, 960, 10);
+            left_Wall.graphics.drawRect(0, 0, 10, 540);
+            right_Wall.graphics.drawRect(0, 0, 10, 540);
+            up_Wall.setBounds(0, 0, 960, 10);
+            left_Wall.setBounds(0, 0, 10, 540);
+            right_Wall.setBounds(0, 0, 10, 540);
+            stage.addChild(up_Wall);
+            stage.addChild(left_Wall);
+            stage.addChild(right_Wall);
+            right_Wall.x = 950;
+
+            /*ブロック*/
+            /*大きさは幅40、高さ15、数は15,10*/
+            block_Container.x = 125;
+            block_Container.y = 80;
+            stage.addChild(block_Container);
+            let block_row = 15;
+            let block_column= 10;
+            for(i=0;i<block_column;i++) {
+                for(j=0;j<block_row;j++) {
+                    let block = new createjs.Shape();
+                    block.graphics.beginFill(`rgba(${10*(j+10)},0,${10*(i+10)},1)`);  //``(シングルコーテーションで$が使える)
+                    //${}は計算式の結果を文字列にする
+                    block.setBounds(0,0,30,15);
+                    block.graphics.beginStroke("block");
+                    block.graphics.setStrokeStyle(1);
+                    block.graphics.drawRect(block_Container.x + (block.getBounds().width*j),block_Container.y + (block.getBounds().height*i),block.getBounds().width,block.getBounds().height);
+                    block_Container.addChild(block);
+                }
+            }
+            stage.addChild(block_Container);
+
+
+            /*フレーム処理*/
+            createjs.Ticker.addEventListener("tick", handleTick);
+
+            function handleTick() {
+
+                //マウス処理用変数
+                let mx = stage.mouseX;
+                //マウス処理
+                player.x = mx - (player.getBounds().width/2);
+                //キーボード処理
+                /*
+                if(isPressRight === true) player.x+=20;
+                else if(isPressLeft === true) player.x -= 20;
+                */
+
+                /*バーが外に出ないようにする*/
+                if (player.x <= left_Wall.getBounds().width) {
+                    player.x = left_Wall.getBounds().width;
+                }
+                if (player.x + player.getBounds().width >= 960 - right_Wall.getBounds().width) {
+                    player.x = 960 - right_Wall.getBounds().width - player.getBounds().width;
+                }
+
+                //Zが押されたら発射
+                if (isPressZ === true) start = true;
+
+                //ボールは初期値自機に引っ付いて動く
+                if (start === false) {
+                    ball.x = player.x + (player.getBounds().width/2);
+                    ball.y = player.y - ball.getBounds().width;
+                } else {
+                    //発射
+                    ball.x += vectorX * ballSpeed;
+                    ball.y -= vectorY * ballSpeed;
+                    if (ball.y > 540) {
+                        start = false;
+                        vectorX = 1;
+                        vectorY = 1;
+                    }
+                }
+
+            /*弾の反射計算*/
+                //setBoundsで壁やらのサイズ取得
+
+            if (ball.x >= right_Wall.x ) {
+                ball.x = right_Wall.x;
+                vectorX *= -1;
+            }
+            if(ball.x <= left_Wall.x + left_Wall.getBounds().width) {
+                ball.x = left_Wall.x + left_Wall.getBounds().width;
+                vectorX *= -1;
+            }
+            if(ball.y <= up_Wall.y + up_Wall.getBounds().height) {
+                ball.y = up_Wall.y + up_Wall.getBounds().height;
+                vectorY *= -1;
+            }
+            if((ball.x >= player.x && ball.x <= player.x + player.getBounds().width) && ball.y >= player.y) {
+                ball.y = player.y;
+                vectorY *= -1;
+            }
+
+            // Stageの描画を更新
+            stage.update();
+        }
+
+        }
+    </script>
+</head>
+<body>
+<canvas id="myCanvas" width="960" height="540"></canvas>
+</body>
+</html>
