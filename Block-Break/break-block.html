@@ -101,6 +101,7 @@
 
             /*ブロック*/
             /*大きさは幅40、高さ15、数は15,10*/
+            /*
             block_Container.x = 125;
             block_Container.y = 80;
             stage.addChild(block_Container);
@@ -119,6 +120,28 @@
                 }
             }
             stage.addChild(block_Container);
+            */
+
+            let blockX = 250;
+            let blockY = 180;
+            let block_row = 15;
+            let block_column= 10;
+            let block = new Array(block_column);
+            for(i=0;i<block_column;i++) {
+                block[i] = new Array(block_row);
+            }
+            for(i=0;i<block_column;i++) {
+                for(j=0;j<block_row;j++) {
+                    block[i][j] = new createjs.Shape();
+                    block[i][j].graphics.beginFill(`rgba(${10*(j+10)},0,${10*(i+10)},1)`);  //``(シングルコーテーションで$が使える)
+                    //${}は計算式の結果を文字列にする
+                    block[i][j].setBounds(0,0,30,15);
+                    block[i][j].graphics.beginStroke("block");
+                    block[i][j].graphics.setStrokeStyle(1);
+                    block[i][j].graphics.drawRect(blockX + (block[i][j].getBounds().width*j),blockY + (block[i][j].getBounds().height*i),block[i][j].getBounds().width,block[i][j].getBounds().height);
+                    stage.addChild(block[i][j]);
+                }
+            }
 
 
             /*フレーム処理*/
@@ -155,6 +178,9 @@
                     //発射
                     ball.x += vectorX * ballSpeed;
                     ball.y -= vectorY * ballSpeed;
+                    for(i=0;i<block_column;i++)
+                        for(j=0;j<block_row;j++)
+                            //block_Container.removeAChildAt(block,i);
                     if (ball.y > 540) {
                         start = false;
                         vectorX = 1;
