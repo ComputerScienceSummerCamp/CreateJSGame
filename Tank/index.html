@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tank Shooting</title>
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+    <script>
+        window.addEventListener("load",init);
+        function init() {
+            // stage making
+            let stage = new createjs.Stage("myCanvas");
+
+            // keyHandling variable
+            let isPressleft  = false;
+            let isPressRight = false;
+            let isPressUP    = false;
+            let isPressDown  = false;
+
+            // BackGround
+            let bg = new createjs.Shape();
+            bg.graphics.beginFill("block");
+            bg.graphics.drawRect(0, 0, 960, 540);
+            stage.addChild(bg);
+
+            // player
+            let player = new Tank();
+            player.x = 480;
+            player.y = 270;
+            stage.addChild(player);
+
+            stage.update();
+        }
+
+        // Tank Class
+        class Tank extends createjs.Shape {
+            constructor(x, y) {
+                super();
+
+                this.x = x;
+                this.y = y;
+
+                this.graphics.beginFill("white");
+                this.graphics.moveTo(+10, -2)
+                    .lineTo(+10, +2)
+                    .lineTo(+5, +2)
+                    .lineTo(+5, +5)
+                    .lineTo(-10, +5)
+                    .lineTo(-10, -5)
+                    .lineTo(+5, -5)
+                    .lineTo(+5, -2);
+            }
+        }
+    </script>
+</head>
+<body>
+<canvas id="myCanvas" width="960" height="540"></canvas>
+</body>
+</html>
