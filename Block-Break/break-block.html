@@ -138,7 +138,9 @@
                     block[i][j].setBounds(250+30*j,180+15*i,30,15);
                     block[i][j].graphics.beginStroke("block");
                     block[i][j].graphics.setStrokeStyle(1);
-                    block[i][j].graphics.drawRect(blockX + (block[i][j].getBounds().width*j) ,blockY + (block[i][j].getBounds().height*i),block[i][j].getBounds().width,block[i][j].getBounds().height);
+                    block[i][j].graphics.drawRect(0,0,block[i][j].getBounds().width,block[i][j].getBounds().height);
+                    block[i][j].x = blockX + (block[i][j].getBounds().width*j);
+                    block[i][j].y = blockY + (block[i][j].getBounds().height*i);
                     stage.addChild(block[i][j]);
                 }
             }
@@ -212,14 +214,16 @@
                 for (i = 0; i < block.length; i++) {
                     let array = block[i];
                     for (j = 0; j < array.length; j++) {
-                        ball.x = array[j].x + 15;
+                        //ball.x = array[j].x + 15;
                         if (ball.x >= array[j].x && ball.x <= array[j].x + array[j].getBounds().width) {
                             if (ball.y >= array[j].y && ball.y <= array[j].y + array[j].getBounds().height) {
-                                array.splice(j,1);
-                                ball.x = 50;
-                                //array[j].xが0になってる?????????????
-                                //つまり全てのblockのx座標が0になってる
-                                //vectorX = -1;
+                                array.splice(j,0);
+                                stage.removeChild(array[j]);
+                                //消え方がまばら、block[i][0]が消えない(これはおそらくarrayの問題)
+                                //ループ文に問題があるとみる
+                                //出　　来　　ま　　し　　た
+                                // 残りは反射
+                                // vectorX = -1;
                             }
                         }
                     }
