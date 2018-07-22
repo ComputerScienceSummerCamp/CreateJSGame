@@ -79,7 +79,7 @@
             ball.graphics.drawCircle(0, 0, 7);
             ball.setBounds(0,0,7,7);
             stage.addChild(ball);
-            let ballSpeed = 20;
+            let ballSpeed = 5;
 
             /*外枠*/
             let up_Wall = new createjs.Shape();
@@ -135,24 +135,28 @@
                     block[i][j] = new createjs.Shape();
                     block[i][j].graphics.beginFill(`rgba(${10*(j+10)},0,${10*(i+10)},1)`);  //``(シングルコーテーションで$が使える)
                     //${}は計算式の結果を文字列にする
-                    block[i][j].setBounds(0,0,30,15);
+                    block[i][j].setBounds(250+30*j,180+15*i,30,15);
                     block[i][j].graphics.beginStroke("block");
                     block[i][j].graphics.setStrokeStyle(1);
-                    block[i][j].graphics.drawRect(blockX + (block[i][j].getBounds().width*j),blockY + (block[i][j].getBounds().height*i),block[i][j].getBounds().width,block[i][j].getBounds().height);
+                    block[i][j].graphics.drawRect(blockX + (block[i][j].getBounds().width*j) ,blockY + (block[i][j].getBounds().height*i),block[i][j].getBounds().width,block[i][j].getBounds().height);
                     stage.addChild(block[i][j]);
                 }
             }
 
 
+
+
+
             /*フレーム処理*/
             createjs.Ticker.addEventListener("tick", handleTick);
+            createjs.Ticker.framerate = 60;
 
             function handleTick() {
 
                 //マウス処理用変数
                 let mx = stage.mouseX;
                 //マウス処理
-                player.x = mx - (player.getBounds().width/2);
+                player.x = mx - (player.getBounds().width / 2);
                 //キーボード処理
                 /*
                 if(isPressRight === true) player.x+=20;
@@ -172,15 +176,13 @@
 
                 //ボールは初期値自機に引っ付いて動く
                 if (start === false) {
-                    ball.x = player.x + (player.getBounds().width/2);
+                    ball.x = player.x + (player.getBounds().width / 2);
                     ball.y = player.y - ball.getBounds().width;
                 } else {
                     //発射
                     ball.x += vectorX * ballSpeed;
                     ball.y -= vectorY * ballSpeed;
-                    for(i=0;i<block_column;i++)
-                        for(j=0;j<block_row;j++)
-                            //block_Container.removeAChildAt(block,i);
+
                     if (ball.y > 540) {
                         start = false;
                         vectorX = 1;
@@ -188,25 +190,40 @@
                     }
                 }
 
-            /*弾の反射計算*/
+                /*弾の反射計算*/
                 //setBoundsで壁やらのサイズ取得
 
-            if (ball.x >= right_Wall.x ) {
-                ball.x = right_Wall.x;
-                vectorX *= -1;
-            }
-            if(ball.x <= left_Wall.x + left_Wall.getBounds().width) {
-                ball.x = left_Wall.x + left_Wall.getBounds().width;
-                vectorX *= -1;
-            }
-            if(ball.y <= up_Wall.y + up_Wall.getBounds().height) {
-                ball.y = up_Wall.y + up_Wall.getBounds().height;
-                vectorY *= -1;
-            }
-            if((ball.x >= player.x && ball.x <= player.x + player.getBounds().width) && ball.y >= player.y) {
-                ball.y = player.y;
-                vectorY *= -1;
-            }
+                if (ball.x >= right_Wall.x) {
+                    ball.x = right_Wall.x;
+                    vectorX *= -1;
+                }
+                if (ball.x <= left_Wall.x + left_Wall.getBounds().width) {
+                    ball.x = left_Wall.x + left_Wall.getBounds().width;
+                    vectorX *= -1;
+                }
+                if (ball.y <= up_Wall.y + up_Wall.getBounds().height) {
+                    ball.y = up_Wall.y + up_Wall.getBounds().height;
+                    vectorY *= -1;
+                }
+                if ((ball.x >= player.x && ball.x <= player.x + player.getBounds().width) && (ball.y >= player.y && ball.y <= player.y + player.getBounds().height)) {
+                    ball.y = player.y;
+                    vectorY *= -1;
+                }
+                for (i = 0; i < block.length; i++) {
+                    let array = block[i];
+                    for (j = 0; j < array.length; j++) {
+                        ball.x = array[j].x + 15;
+                        if (ball.x >= array[j].x && ball.x <= array[j].x + array[j].getBounds().width) {
+                            if (ball.y >= array[j].y && ball.y <= array[j].y + array[j].getBounds().height) {
+                                array.splice(j,1);
+                                ball.x = 50;
+                                //array[j].xが0になってる?????????????
+                                //つまり全てのblockのx座標が0になってる
+                                //vectorX = -1;
+                            }
+                        }
+                    }
+                }
 
             // Stageの描画を更新
             stage.update();
