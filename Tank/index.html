@@ -37,13 +37,16 @@
 
             // Tank Class
             class Tank extends createjs.Shape {
-                constructor(x, y) {
+                constructor(x, y, colorR, colorG, colorB) {
                     super();
 
                     this.x = x;
                     this.y = y;
+                    this.colorR = colorR;
+                    this.colorG = colorG;
+                    this.colorB = colorB;
 
-                    this.graphics.beginFill("white");
+                    this.graphics.beginFill(createjs.Graphics.getRGB(colorR,colorG,colorB));
                     this.graphics.moveTo(+10, -2)
                         .lineTo(+10, +2)
                         .lineTo(+5, +2)
@@ -56,9 +59,7 @@
             }
 
             // player
-            let player = new Tank();
-            player.x = 480;
-            player.y = 270;
+            let player = new Tank(480, 270,255,255,255);
             stage.addChild(player);
 
 
@@ -127,14 +128,16 @@
             }
 
             let containerA = new createjs.Container();
-            containerA.x = 300;
-            containerA.y = 300;
+            containerA.x = 480;
+            containerA.y = 270;
+
             stage.addChild(containerA);
 
             for (let i = 0; i < 10; i++){
-                let enemyA = new Tank();
-                enemyA.x = Math.sin(i * 360 / 10 * Math.PI / 180);
-                enemyA.y = Math.cos(i * 360 / 10 * Math.PI / 180);
+                let Ax = 200 * Math.sin(i * 360 / 10 * Math.PI / 180);
+                let Ay = 200 * Math.cos(i * 360 / 10 * Math.PI / 180);
+
+                let enemyA = new Tank(Ax,Ay,255,0,0);
 
                 containerA.addChild(enemyA);
             }
@@ -178,7 +181,7 @@
                     }
 
                 }
-                
+
             }
 
             stage.update();
