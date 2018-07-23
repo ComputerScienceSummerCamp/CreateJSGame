@@ -101,29 +101,9 @@
 
             /*ブロック*/
             /*大きさは幅40、高さ15、数は15,10*/
-            /*
-            block_Container.x = 125;
-            block_Container.y = 80;
-            stage.addChild(block_Container);
-            let block_row = 15;
-            let block_column= 10;
-            for(i=0;i<block_column;i++) {
-                for(j=0;j<block_row;j++) {
-                    let block = new createjs.Shape();
-                    block.graphics.beginFill(`rgba(${10*(j+10)},0,${10*(i+10)},1)`);  //``(シングルコーテーションで$が使える)
-                    //${}は計算式の結果を文字列にする
-                    block.setBounds(0,0,30,15);
-                    block.graphics.beginStroke("block");
-                    block.graphics.setStrokeStyle(1);
-                    block.graphics.drawRect(block_Container.x + (block.getBounds().width*j),block_Container.y + (block.getBounds().height*i),block.getBounds().width,block.getBounds().height);
-                    block_Container.addChild(block);
-                }
-            }
-            stage.addChild(block_Container);
-            */
 
-            let blockX = 250;
-            let blockY = 180;
+            let blockX = 250; //ブロックの一番左(スタート位置)
+            let blockY = 180; //ブロックの一番上(スタート位置)
             let block_row = 15;
             let block_column= 10;
             let block = new Array(block_column);
@@ -215,18 +195,17 @@
                     let array = block[i];
                     for (j = 0; j < array.length; j++) {
                         //ball.x = array[j].x + 15;
-                        if (ball.x >= array[j].x && ball.x <= array[j].x + array[j].getBounds().width) {
+                        if ((ball.x) >= array[j].x && (ball.x) <= array[j].x + array[j].getBounds().width) {
                             if (ball.y >= array[j].y && ball.y <= array[j].y + array[j].getBounds().height) {
-                                array.splice(j,0);
                                 stage.removeChild(array[j]);
-                                //消え方がまばら、block[i][0]が消えない(これはおそらくarrayの問題)
-                                //ループ文に問題があるとみる
-                                //出　　来　　ま　　し　　た
-                                // 残りは反射
-                                // vectorX = -1;
+                                array.splice(j,1);
+                                // 残りは反
+                                vectorX *= -1;
+                                vectorY *= -1;
                             }
                         }
                     }
+                    block[i] = array;
                 }
 
             // Stageの描画を更新
