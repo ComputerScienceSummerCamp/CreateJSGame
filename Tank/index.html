@@ -20,10 +20,13 @@
             const UP = 38;
             const RIGHT = 39;
             const DOWN = 40;
+
             let bulletList = [];
             let angle = 0;
             let speed = 0;
-
+            let bulletListA = [];
+            let count = 0;
+            let GameOver;
 
             // BackGround
             let bg = new createjs.Shape();
@@ -109,7 +112,6 @@
                 }
             }
             //alert("Debug");
-            
             if (isPressleft === true){
                 angle -= 5;
             }
@@ -124,10 +126,24 @@
                 speed -= 1;
             }
 
+            let containerA = new createjs.Container();
+            containerA.x = 300;
+            containerA.y = 300;
+            stage.addChild(containerA);
+
+            for (let i = 0; i < 10; i++){
+                let enemyA = new Tank();
+                enemyA.x = Math.sin(i * 360 / 10 * Math.PI / 180);
+                enemyA.y = Math.cos(i * 360 / 10 * Math.PI / 180);
+
+                containerA.addChild(enemyA);
+            }
+
             createjs.Ticker.timingMode = createjs.Ticker.RAF;
             createjs.Ticker.addEventListener("tick", handleTick);
             function handleTick() {
-                // angle
+                count++ ;
+
                 player.rotation = angle;
                 // Convert radian
                 let radian = angle * Math.PI / 180;
@@ -144,8 +160,27 @@
                 if (player.y < 0) ship.y = 0;
                 if (player.y > stage.canvas.height) ship.y = stage.canvas.height;
 
+                if (count % 50 === 0){
+                    let bulletA = new createjs.Shape();
+                    bulletA.graphics.beginFill("white").drawCircle(0, 0, 3);
+                    bulletA.x = containerA.x;
+                    bulletA.y = containerA.y;
 
+                    bulletListA.push(bulletA);
+                    stage.addChild(bulletListA);
+                }
+
+                for (let i = 0; i < bulletListA.length; i++){
+                    let ALocal = bulletListA[i].localToLocal(0,0,player);
+                    if(player.hitTest(ALocal.x, ALocal.y)){
+                        console.log("EnemyA hit!");
+                        GameOver();
+                    }
+
+                }
+                
             }
+
             stage.update();
 
         }
