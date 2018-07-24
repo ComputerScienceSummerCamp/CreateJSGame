@@ -18,7 +18,10 @@
             let vectorX = 1;
             let vectorY = 1;
             let i,j;
-            let block_Container = new createjs.Container();
+            let blockLeft = 0;
+            let blockRight = 0;
+            let blockDown = 0;
+            let blockUp = 0;
 
 
             // 背景を作成します
@@ -125,10 +128,6 @@
                 }
             }
 
-
-
-
-
             /*フレーム処理*/
             createjs.Ticker.addEventListener("tick", handleTick);
             createjs.Ticker.framerate = 60;
@@ -154,27 +153,30 @@
                 }
 
                 //Zが押されたら発射
-                if (isPressZ === true) start = true;
+                if (isPressZ === true && start === false) start = true;
 
                 //ボールは初期値自機に引っ付いて動く
                 if (start === false) {
+                    vectorX = 1;
+                    vectorY = 1;
                     ball.x = player.x + (player.getBounds().width / 2);
                     ball.y = player.y - ball.getBounds().width;
                 } else {
+                    isPressZ = false; //発射されたらZボタンを効かなくする
                     //発射
                     ball.x += vectorX * ballSpeed;
                     ball.y -= vectorY * ballSpeed;
+                }
 
-                    if (ball.y > 540) {
-                        start = false;
-                        vectorX = 1;
-                        vectorY = 1;
-                    }
+                if (ball.y >= 540) {
+                    start = false;
                 }
 
                 /*弾の反射計算*/
                 //setBoundsで壁やらのサイズ取得
 
+                /*弾の反射計算*/
+                //setBoundsで壁やらのサイズ取得
                 if (ball.x >= right_Wall.x) {
                     ball.x = right_Wall.x;
                     vectorX *= -1;
@@ -198,19 +200,87 @@
                         if ((ball.x) >= array[j].x && (ball.x) <= array[j].x + array[j].getBounds().width) {
                             if (ball.y >= array[j].y && ball.y <= array[j].y + array[j].getBounds().height) {
                                 stage.removeChild(array[j]);
-                                array.splice(j,1);
+                                array.splice(j, 1);
                                 // 残りは反
-                                vectorX *= -1;
-                                vectorY *= -1;
+                                //vectorX *= -1;
+                                //vectorY *= -1;
+                                blockLeft = array[j].x + ballSpeed;
+                                blockRight =array[j].x + array[j].getBounds().width - ballSpeed;
+                                blockDown = array[j].y + array[j].getBounds().height - ballSpeed;
+                                blockUp = array[j].y + ballSpeed;
+                                switch(vectorX) {
+                                    case 1:
+                                        switch(vectorY) {
+                                            case 1: //右斜め上
+                                                if(ball.y >= blockDown) {
+                                                    vectorY *=-1;
+                                                    console.log("右下\n");
+                                                }
+                                                else if(ball.x >= blockLeft) {
+                                                    vectorX *= -1;
+                                                    console.log("左上\n");
+                                                } //ballを左に動かしたとき、blockの左にでるかどうか
+                                                break;
+                                            case -1: //右斜め下
+                                                /*if((ball.x === array[j].x) && (ball.y === array[j].y)) {
+                                                    vectorX *= -1;
+                                                    vectorY *= -1;
+                                                } */
+                                                if(ball.y <= blockUp) {
+                                                    vectorY *= -1;
+                                                    console.log("右上\n");
+                                                }
+                                                else if(ball.x <= blockLeft) {
+                                                    vectorX *= -1;
+                                                    console.log("左下\n");
+                                                }
+
+                                                break;
+                                        }
+                                        break;
+                                    case -1:
+                                        switch(vectorY) {
+                                            case 1: //左斜め上
+                                                /*if((ball.x === array[j].x+array[j].getBounds().width) && (ball.y === array[j].y+array[j].getBounds().height)) {
+                                                    vectorX *= -1;
+                                                    vectorY *= -1;
+                                                } */
+                                                if(ball.y >= blockDown) {
+                                                    vectorY *= -1;
+                                                    console.log("左下\n");
+                                                }
+                                                else if(ball.x >= blockRight) {
+                                                    vectorX *= -1;
+                                                    console.log("右上\n");
+                                                }
+                                                break;
+                                            case -1: //左斜め下
+                                                /*if((ball.x === array[j].x+array[j].getBounds().width) && (ball.y === array[j].y)) {
+                                                    vectorX *= -1;
+                                                    vectorY *= -1;
+                                                } */
+                                                if(ball.y <= blockUp) {
+                                                    vectorY *= -1;
+                                                    console.log("左上\n");
+                                                }
+                                                else if(ball.x >= blockRight) {
+                                                    vectorX *= -1;
+                                                    console.log("右下\n");
+                                                }
+
+                                                break;
+                                        }
+                                        break;
+                                }
                             }
                         }
                     }
                     block[i] = array;
                 }
 
-            // Stageの描画を更新
-            stage.update();
-        }
+                // Stageの描画を更新
+                stage.update();
+            }
 
         }
     </script>
