@@ -12,9 +12,12 @@
     // Field
     let stage;
     let scene = 0;
+    let count = 0;
     let enemyList = [];
     let directionList = [];
+    let starList = [];
     let wallList = [];
+    let direction;
     let titleText;
     let player;
     let wall;
@@ -25,9 +28,11 @@
     // Method
     let gameStart;
     let gameOver;
+    let gameClear;
     let initialize;
     let deadTest;
     let wallTest;
+    let starTest;
     let playerOutCheck;
     let enemyOutCheck;
     let handleKeyDown;

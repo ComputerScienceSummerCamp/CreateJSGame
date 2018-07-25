@@ -47,56 +47,58 @@ enemyMove = function () {
 }
 */
 
-enemyMove = function () {
+enemyMove = function (move) {
     for (let i = 0; i < enemyList.length; i++) {
         switch (directionList[i]) {
             case "Up":
-                enemyList[i].y -= 1;
+                enemyList[i].y -= move;
                 if (!enemyOutCheck(enemyList[i])) {
-                    enemyList[i].y += 1;
+                    enemyList[i].y += move;
                     directionList[i] = "Down";
                 }
                 break;
             case "Down":
-                enemyList[i].y += 1;
+                enemyList[i].y += move;
                 if (!enemyOutCheck(enemyList[i])) {
-                    enemyList[i].y -= 1;
+                    enemyList[i].y -= move;
                     directionList[i] = "Up";
                 }
                 break;
             case "Left":
-                enemyList[i].x -= 1;
+                enemyList[i].x -= move;
                 if (!enemyOutCheck(enemyList[i])) {
-                    enemyList[i].x += 1;
+                    enemyList[i].x += move;
                     directionList[i] = "Right";
                 }
                 break;
             case "Right":
-                enemyList[i].x += 1;
+                enemyList[i].x += move;
                 if (!enemyOutCheck(enemyList[i])) {
-                    enemyList[i].x -= 1;
+                    enemyList[i].x -= move;
                     directionList[i] = "Left";
                 }
                 break;
         }
+        if (enemyList[i].x % (960/10) == 0 && enemyList[i].y % (540/5) == 0)
+            directionList[i] = direction[Math.floor(Math.random() * direction.length)];
     }
 }
 
-playerMove = function () {
+playerMove = function (move) {
     if (isPressRight == true) {
-        player.x += 1;
-        if (wallTest(player)) player.x -= 1;
+        player.x += move;
+        if (wallTest(player)) player.x -= move;
     }
     else if (isPressLeft == true) {
-        player.x -= 1;
-        if (wallTest(player)) player.x += 1;
+        player.x -= move;
+        if (wallTest(player)) player.x += move;
     }
     if (isPressDown == true) {
-        player.y += 1;
-        if (wallTest(player)) player.y -= 1;
+        player.y += move;
+        if (wallTest(player)) player.y -= move;
     }
     else if (isPressUp == true) {
-        player.y -= 1;
-        if (wallTest(player)) player.y += 1;
+        player.y -= move;
+        if (wallTest(player)) player.y += move;
     }
 }

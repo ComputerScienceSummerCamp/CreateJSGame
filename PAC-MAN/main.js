@@ -17,7 +17,7 @@ function init() {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
-    createjs.Ticker.setFPS(120);
+    createjs.Ticker.setFPS(100);
     createjs.Ticker.addEventListener("tick", handleTick);
 
     function handleTick() {
@@ -25,8 +25,9 @@ function init() {
             stage.update();
         }
         else if (scene === 1) {
-            enemyMove();
-            playerMove();
+            enemyMove(1);
+            playerMove(1.5);
+            starTest();
             playerOutCheck();
             deadTest();
             stage.update();
