@@ -27,12 +27,24 @@ class Character extends ProductShape {
         this.graphics.beginFill(color);
         this.graphics.drawCircle(0,0,r);
     }
+
+    Move() {
+        createjs.Tween.get(this, {loop:true})
+            .wait(500)
+            .to({x: 100,y:200}, 2000,createjs.Ease.cubicOut)
+            .wait(500)
+            .to({x: 270,y:200}, 2000,createjs.Ease.cubicOut)
+            .wait(500)
+            .to({x: 400,y:400}, 2000,createjs.Ease.cubicOut)
+            .wait(500)
+            .to({x: 270,y:150}, 2000,createjs.Ease.cubicOut);
+    }
+
 }
 
 class Shot extends Character {
 
     Move(v) {
-        this.y+=1;
         /*
         switch(v%5) {
             case 0:
@@ -58,10 +70,26 @@ class Shot extends Character {
         */
         let dx = this.x - boss.x;
         let dy = this.y - boss.y;
+        // 差分を元に方向を計算
+        let radians = Math.atan2(dy, dx);
+        // ラジアンを角度に変換
+        let degrees = radians * 180 / Math.PI;
         let distance = Math.sqrt(dx * dx + dy * dy);
-        let angle=270;
+        let angle=v%One_shot;
+            this.x += 3 * Math.cos(angle);// * radians;
+            this.y += 3 * Math.sin(angle);// * radians;
 
-        this.x = boss.x + Math.cos(v) * distance;
+            //this.x = boss.x + Math.cos(v) * distance;
+    }
+
+    removeJudge(j) {
+        if(this.x < 0 || this.x > 540 || this.y < 0 || this.y > 650) {
+            stage.removeChild(shot[j]);
+            //shot.splice(j,1);
+
+        }
+
+
     }
 
 }
