@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>lecture-shooting</title>
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
+</head>
+<body>
+<canvas id="myCanvas" width="540" height="650"></canvas>
+<!--ここでグローバル変数(全体で使うもの)を入れる -->
+<script type="text/javascript">
+    let stage;
+    let scene = 0;
+    let player;
+    let boss;
+    let titleText;
+    let shot = [];
+    let i=0;
+</script>
+<!-- scriptでファイル選択 -->
+<!-- mainは主に関数の宣言、処理の流れがメイン -->
+<script src="main.js"></script>
+<!-- classはクラス置き場 -->
+<script src="class.js"></script>
+<!-- initializeは最初の処理、ステージやプレイヤー作り -->
+<script src="initialize.js"></script>
+<!-- titleはタイトルの表示 -->
+<script src="system.js"></script>
+
+</body>
+</html>
